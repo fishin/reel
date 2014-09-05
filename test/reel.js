@@ -26,8 +26,7 @@ internals.prepareServer = function (callback) {
 
 describe('api', function () {    
 
-
-  it('POST /api/reel', function (done) {
+    it('CRUD flow of reel', function (done) {
         internals.prepareServer(function (server) {
 
             var payload = {
@@ -56,6 +55,47 @@ describe('api', function () {
                             console.log('reels: ' + response4.result);
                             expect(response4.statusCode).to.equal(200);
                             expect(response4.result).to.have.length(1);
+                            server.inject({ method: 'DELETE', url: '/api/reel/'+ reel_id }, function (response5) {
+
+                                expect(response5.statusCode).to.equal(200);
+                                expect(response5.payload).to.exist;
+                                done();
+                            });
+                        });
+                    });
+                });
+           });
+       });
+    });
+
+    it('cancel flow of reel', function (done) {
+        internals.prepareServer(function (server) {
+
+            var payload = {
+                commands: [ "date", "uptime", "cat /etc/hosts", [ "sleep 5", "pwd", "ls -altr" ] ],
+            };
+            server.inject({ method: 'POST', url: '/api/reel', payload: payload }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist;
+                expect(response.result.reel_id).to.exist;
+                var reel_id = response.result.reel_id;
+                server.inject({ method: 'GET', url: '/api/reel/'+ reel_id + '/run'}, function (response2) {
+      
+                    expect(response2.statusCode).to.equal(200);
+                    expect(response2.result.reel_id).to.exist;
+                    expect(response2.result.results).to.be.length(4);
+                    server.inject({ method: 'GET', url: '/api/reel/'+ reel_id}, function (response3) {
+
+                        expect(response3.statusCode).to.equal(200);
+                        expect(response3.result.commands).to.exist;
+                        expect(response3.result.reel_id).to.exist;
+                        expect(response3.result.created).to.exist;
+                        server.inject({ method: 'GET', url: '/api/reel/'+ reel_id + '/cancel'}, function (response4) {
+
+                            expect(response4.statusCode).to.equal(200);
+                            expect(response4.result.status).to.equal('cancelled');
+                            expect(response4.result).to.exist;
                             server.inject({ method: 'DELETE', url: '/api/reel/'+ reel_id }, function (response5) {
 
                                 expect(response5.statusCode).to.equal(200);
