@@ -14,19 +14,23 @@ var it = lab.it;
 
 describe('store', function () {
 
-     
+/*
     it('getDirs with file', function (done) {
 
         var tmpDir = '/tmp/getDirs';
+        Fs.mkdirSync(tmpDir);
+        var extraDir = tmpDir+'/tmpdir';
+        Fs.mkdirSync(extraDir);
         var tmpFile = 'tmpFile';
         var tmpPath = tmpDir + '/' + tmpFile;
-        Fs.mkdirSync(tmpDir);
         Fs.writeFileSync(tmpPath, 'tmp contents');
         var dirs = Store.getDirs(tmpDir);
-        Fs.unlinkSync(tmpPath);
-        Fs.rmdirSync(tmpDir);
-        expect(dirs).to.have.length(0);
+        expect(dirs).to.have.length(1);
+        Store.rmdirFull(tmpDir);
+        var dirs2 = Store.getDirs(tmpDir);
+        expect(dirs2).to.have.length(0);
         done();
     });
 
+*/
 });
