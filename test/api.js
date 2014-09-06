@@ -109,45 +109,42 @@ describe('api', function () {
            });
        });
    });
-/*
-    it('GET /api/reel/{reel_id}/console git', function (done) {
-        var reel_id = Store.getReelByLabel('last');
+
+    it('bad command flow of reel', function (done) {
         internals.prepareServer(function (server) {
-            server.inject({ method: 'GET', url: '/api/reel/' + reel_id + '/console' }, function (response) {
 
-                expect(response.statusCode).to.equal(200);
-                expect(response.result.console).to.exist;
-                done();
-            });
-        });
-    });
-
-    it('POST /api/reel missingcommand', function (done) {
-
-         var payload = {};
-         internals.prepareServer(function (server) {
-
-             server.inject({ method: 'POST', url: '/api/reel', payload: payload }, function (response) {
-
-                 expect(response.statusCode).to.equal(404);
-                 expect(response.payload).to.exist;
-                 expect(response.result.reel_id).to.not.exist;
-                 expect(response.result.err).to.exist;
-                 done();
-             });
-         });
-    });
-
-    it('GET /api/reel/{reel_id}/cancel', function (done) {
-        var reel_id = Store.getReelConfigByName('latest');
-        internals.prepareServer(function (server) {
-            server.inject({ method: 'GET', url: '/api/reel/' + reel_id + '/cancel' }, function (response) {
+            var payload = {
+                commands: [ "date", "uptime", [ "ls -altr", "invalid", "ls -altr" ], "cat /etc/hosts" ],
+            };
+            server.inject({ method: 'POST', url: '/api/reel', payload: payload }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
-                done();
-            });
-        });
-    });
-*/
+                expect(response.result.reel_id).to.exist;
+                var reel_id = response.result.reel_id;
+                server.inject({ method: 'GET', url: '/api/reel/'+ reel_id + '/run'}, function (response2) {
+      
+                    //console.log('result:\n' + JSON.stringify(response2.result, null, 4)); 
+                    expect(response2.statusCode).to.equal(200);
+                    expect(response2.result.reel_id).to.exist;
+                    expect(response2.result.commands).to.be.length(4);
+                    expect(response2.result.commands[2][1].stderr).to.exist;
+                    expect(response2.result.commands[3].pid).to.not.exist;
+                    server.inject({ method: 'GET', url: '/api/reel/'+ reel_id}, function (response3) {
+
+                        expect(response3.statusCode).to.equal(200);
+                        expect(response3.result.commands).to.exist;
+                        expect(response3.result.reel_id).to.exist;
+                        expect(response3.result.createTime).to.exist;
+                        server.inject({ method: 'DELETE', url: '/api/reel/'+ reel_id }, function (response5) {
+
+                            expect(response5.statusCode).to.equal(200);
+                            expect(response5.payload).to.exist;
+                            done();
+                        });
+                    });
+                });
+           });
+       });
+   });
 });
