@@ -30,7 +30,7 @@ describe('api', function () {
         internals.prepareServer(function (server) {
 
             var payload = {
-                commands: [ "date", "uptime", "cat /etc/hosts", [ "sleep 5", "pwd", "ls -altr" ] ],
+                commands: [ "date", "uptime", "cat /etc/hosts", [ "sleep 5", "npm list", "ls -altr" ] ],
             };
             server.inject({ method: 'POST', url: '/api/reel', payload: payload }, function (response) {
 
@@ -43,16 +43,16 @@ describe('api', function () {
                     expect(response2.statusCode).to.equal(200);
                     expect(response2.result.commands).to.exist;
                     expect(response2.result.reel_id).to.exist;
-                    expect(response2.result.created).to.exist;
+                    expect(response2.result.createTime).to.exist;
                     server.inject({ method: 'GET', url: '/api/reel/'+ reel_id + '/run'}, function (response3) {
       
-                        console.log('results:\n' + JSON.stringify(response3.result.results, null, 4)); 
+                        //console.log('result:\n' + JSON.stringify(response3.result, null, 4)); 
                         expect(response3.statusCode).to.equal(200);
                         expect(response3.result.reel_id).to.exist;
-                        expect(response3.result.results).to.be.length(4);
+                        expect(response3.result.commands).to.be.length(4);
                         server.inject({ method: 'GET', url: '/api/reels'}, function (response4) {
 
-                            console.log('reels: ' + response4.result);
+                            //console.log('reels: ' + response4.result);
                             expect(response4.statusCode).to.equal(200);
                             expect(response4.result).to.have.length(1);
                             server.inject({ method: 'DELETE', url: '/api/reel/'+ reel_id }, function (response5) {
@@ -72,7 +72,7 @@ describe('api', function () {
         internals.prepareServer(function (server) {
 
             var payload = {
-                commands: [ "date", "uptime", "cat /etc/hosts", [ "sleep 5", "pwd", "ls -altr" ] ],
+                commands: [ "date", "uptime", "cat /etc/hosts", [ "npm list", "ls -altr" ] ],
             };
             server.inject({ method: 'POST', url: '/api/reel', payload: payload }, function (response) {
 
@@ -82,15 +82,16 @@ describe('api', function () {
                 var reel_id = response.result.reel_id;
                 server.inject({ method: 'GET', url: '/api/reel/'+ reel_id + '/run'}, function (response2) {
       
+                    //console.log('result:\n' + JSON.stringify(response2.result, null, 4)); 
                     expect(response2.statusCode).to.equal(200);
                     expect(response2.result.reel_id).to.exist;
-                    expect(response2.result.results).to.be.length(4);
+                    expect(response2.result.commands).to.be.length(4);
                     server.inject({ method: 'GET', url: '/api/reel/'+ reel_id}, function (response3) {
 
                         expect(response3.statusCode).to.equal(200);
                         expect(response3.result.commands).to.exist;
                         expect(response3.result.reel_id).to.exist;
-                        expect(response3.result.created).to.exist;
+                        expect(response3.result.createTime).to.exist;
                         server.inject({ method: 'GET', url: '/api/reel/'+ reel_id + '/cancel'}, function (response4) {
 
                             expect(response4.statusCode).to.equal(200);
@@ -108,10 +109,7 @@ describe('api', function () {
            });
        });
    });
-
 /*
-
-
     it('GET /api/reel/{reel_id}/console git', function (done) {
         var reel_id = Store.getReelByLabel('last');
         internals.prepareServer(function (server) {
