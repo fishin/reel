@@ -23,7 +23,6 @@ describe('store', function () {
         expect(dirs).to.have.length(1);
         Fs.rmdirSync(tmpDir);
         var dirs2 = Store.getDirs(__dirname);
-        console.log(dirs2);
         expect(dirs2).to.have.length(0);
         done();
     });

@@ -30,7 +30,7 @@ describe('api', function () {
         internals.prepareServer(function (server) {
 
             var payload = {
-                commands: [ "date", "uptime", "cat /etc/hosts", [ "sleep 5", "npm list", "ls -altr" ] ],
+                commands: [ "cat /etc/hosts", "sleep 5", [ "uptime", "npm list", "ls -altr" ], "date" ],
             };
             server.inject({ method: 'POST', url: '/api/reel', payload: payload }, function (response) {
 
