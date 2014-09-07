@@ -1,6 +1,5 @@
 var Lab = require('lab');
 var Hapi = require('hapi');
-var Store = require('../lib/store/file');
 
 var internals = {};
 
@@ -36,19 +35,19 @@ describe('api', function () {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
-                expect(response.result.reel_id).to.exist;
-                var reel_id = response.result.reel_id;
+                expect(response.result.id).to.exist;
+                var reel_id = response.result.id;
                 server.inject({ method: 'GET', url: '/api/reel/'+ reel_id}, function (response2) {
 
                     expect(response2.statusCode).to.equal(200);
                     expect(response2.result.commands).to.exist;
-                    expect(response2.result.reel_id).to.exist;
+                    expect(response2.result.id).to.exist;
                     expect(response2.result.createTime).to.exist;
                     server.inject({ method: 'GET', url: '/api/reel/'+ reel_id + '/run'}, function (response3) {
       
                         //console.log('result:\n' + JSON.stringify(response3.result, null, 4)); 
                         expect(response3.statusCode).to.equal(200);
-                        expect(response3.result.reel_id).to.exist;
+                        expect(response3.result.id).to.exist;
                         expect(response3.result.commands).to.be.length(4);
                         server.inject({ method: 'GET', url: '/api/reels'}, function (response4) {
 
@@ -78,19 +77,19 @@ describe('api', function () {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
-                expect(response.result.reel_id).to.exist;
-                var reel_id = response.result.reel_id;
+                expect(response.result.id).to.exist;
+                var reel_id = response.result.id;
                 server.inject({ method: 'GET', url: '/api/reel/'+ reel_id + '/run'}, function (response2) {
       
                     //console.log('result:\n' + JSON.stringify(response2.result, null, 4)); 
                     expect(response2.statusCode).to.equal(200);
-                    expect(response2.result.reel_id).to.exist;
+                    expect(response2.result.id).to.exist;
                     expect(response2.result.commands).to.be.length(4);
                     server.inject({ method: 'GET', url: '/api/reel/'+ reel_id}, function (response3) {
 
                         expect(response3.statusCode).to.equal(200);
                         expect(response3.result.commands).to.exist;
-                        expect(response3.result.reel_id).to.exist;
+                        expect(response3.result.id).to.exist;
                         expect(response3.result.createTime).to.exist;
                         server.inject({ method: 'GET', url: '/api/reel/'+ reel_id + '/cancel'}, function (response4) {
 
@@ -120,13 +119,13 @@ describe('api', function () {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist;
-                expect(response.result.reel_id).to.exist;
-                var reel_id = response.result.reel_id;
+                expect(response.result.id).to.exist;
+                var reel_id = response.result.id;
                 server.inject({ method: 'GET', url: '/api/reel/'+ reel_id + '/run'}, function (response2) {
       
                     //console.log('result:\n' + JSON.stringify(response2.result, null, 4)); 
                     expect(response2.statusCode).to.equal(200);
-                    expect(response2.result.reel_id).to.exist;
+                    expect(response2.result.id).to.exist;
                     expect(response2.result.commands).to.be.length(4);
                     expect(response2.result.commands[2][1].stderr).to.exist;
                     expect(response2.result.commands[3].pid).to.not.exist;
@@ -134,7 +133,7 @@ describe('api', function () {
 
                         expect(response3.statusCode).to.equal(200);
                         expect(response3.result.commands).to.exist;
-                        expect(response3.result.reel_id).to.exist;
+                        expect(response3.result.id).to.exist;
                         expect(response3.result.createTime).to.exist;
                         server.inject({ method: 'DELETE', url: '/api/reel/'+ reel_id }, function (response5) {
 
