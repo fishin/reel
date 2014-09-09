@@ -17,7 +17,7 @@
     "hoek": "2.x.x",
     "joi": "4.x.x",
     "node-uuid": "1.4.x",
-    "pail": "http://github.com/fishin/pail.git"
+    "pail": "https://github.com/fishin/pail.git"
   },
   "devDependencies": {
     "lab": "4.x.x"
