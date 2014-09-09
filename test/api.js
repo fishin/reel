@@ -29,7 +29,7 @@ describe('api', function () {
         internals.prepareServer(function (server) {
 
             var payload = {
-                commands: [ "cat /etc/hosts", "sleep 5", [ "uptime", "npm list", "ls -altr" ], "date" ]
+                commands: [ 'git clone https://github.com/fishin/reel .', 'cat /etc/hosts', [ 'uptime', 'npm list', 'ls -altr' ], 'date' ]
             };
             server.inject({ method: 'POST', url: '/api/reel', payload: payload }, function (response) {
 
@@ -71,7 +71,7 @@ describe('api', function () {
         internals.prepareServer(function (server) {
 
             var payload = {
-                commands: [ "date", "uptime", "cat /etc/hosts", [ "npm list", "ls -altr" ] ]
+                commands: [ 'date', 'sleep 5', 'cat /etc/hosts', [ 'npm list', 'ls -altr' ] ]
             };
             server.inject({ method: 'POST', url: '/api/reel', payload: payload }, function (response) {
 
@@ -113,7 +113,7 @@ describe('api', function () {
         internals.prepareServer(function (server) {
 
             var payload = {
-                commands: [ "date", "uptime", [ "ls -altr", "invalid", "ls -altr" ], "cat /etc/hosts" ]
+                commands: [ 'date', 'uptime', [ 'ls -altr', 'invalid', 'ls -altr' ], 'cat /etc/hosts' ]
             };
             server.inject({ method: 'POST', url: '/api/reel', payload: payload }, function (response) {
 
