@@ -45,7 +45,7 @@ describe('api', function () {
                     expect(response2.result.createTime).to.exist;
                     server.inject({ method: 'GET', url: '/api/reel/'+ reel_id + '/run'}, function (response3) {
       
-                        console.log('result:\n' + JSON.stringify(response3.result, null, 4)); 
+                        //console.log('result:\n' + JSON.stringify(response3.result, null, 4)); 
                         expect(response3.statusCode).to.equal(200);
                         expect(response3.result.id).to.exist;
                         expect(response3.result.commands).to.be.length(4);
@@ -128,7 +128,7 @@ describe('api', function () {
                     expect(response2.statusCode).to.equal(200);
                     expect(response2.result.id).to.exist;
                     expect(response2.result.commands).to.be.length(4);
-                    expect(response2.result.commands[2][1].stderr).to.exist;
+                    expect(response2.result.commands[2][1].error).to.exist;
                     expect(response2.result.commands[3].pid).to.not.exist;
                     server.inject({ method: 'GET', url: '/api/reel/'+ reel_id}, function (response3) {
 
