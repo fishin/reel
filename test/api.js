@@ -29,7 +29,7 @@ describe('api', function () {
         internals.prepareServer(function (server) {
 
             var payload = {
-                commands: [ 'uname -a', 'git clone -b master https://github.com/fishin/reel.git .', 'bin/test.sh', [ 'uptime', 'npm list', 'ls -altr' ], 'date' ]
+                commands: [ 'uname -a', 'git clone --branch=master -q https://github.com/fishin/reel .', 'bin/test.sh', [ 'uptime', 'npm list', 'ls -altr' ], 'date' ]
             };
             server.inject({ method: 'POST', url: '/api/reel', payload: payload }, function (response) {
 
