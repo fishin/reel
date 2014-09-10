@@ -16,7 +16,6 @@
     "hapi": "6.x.x",
     "hoek": "2.x.x",
     "joi": "4.x.x",
-    "node-uuid": "1.4.x",
     "pail": "git+https://github.com/fishin/pail"
   },
   "devDependencies": {
