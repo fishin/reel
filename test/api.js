@@ -29,7 +29,7 @@ describe('api', function () {
         internals.prepareServer(function (server) {
 
             var payload = {
-                commands: [ 'uname -a', 'git clone --branch=master -q https://github.com/fishin/reel .', 'bin/test.sh', [ 'uptime', 'npm list', 'ls -altr' ], 'date' ]
+                commands: [ 'git clone --branch=master -q https://github.com/fishin/reel .', 'bin/test.sh', [ 'uptime', 'npm list', 'ls -altr' ], 'date' ]
             };
             server.inject({ method: 'POST', url: '/api/reel', payload: payload }, function (response) {
 
@@ -45,7 +45,7 @@ describe('api', function () {
                     expect(response2.result.createTime).to.exist;
                     server.inject({ method: 'GET', url: '/api/reel/'+ reel_id + '/run'}, function (response3) {
       
-                        console.log('result:\n' + JSON.stringify(response3.result, null, 4)); 
+                        //console.log('result:\n' + JSON.stringify(response3.result, null, 4)); 
                         expect(response3.statusCode).to.equal(200);
                         expect(response3.result.id).to.exist;
                         expect(response3.result.commands).to.be.length(4);
