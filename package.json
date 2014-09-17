@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fishin/pail"
+    "url": "https://github.com/fishin/reel"
   },
   "scripts": {
     "test": "make test-cov"
