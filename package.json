@@ -24,6 +24,7 @@
     "pail": "git+https://github.com/fishin/pail"
   },
   "devDependencies": {
-    "lab": "4.x.x"
+    "lab": "4.x.x",
+    "lout": "5.x.x"
   }
 }
