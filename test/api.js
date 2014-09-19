@@ -1,8 +1,6 @@
 var Lab = require('lab');
 var Hapi = require('hapi');
 
-var internals = {};
-
 var lab = exports.lab = Lab.script();
 var expect = Lab.expect;
 var before = lab.before;
@@ -10,12 +8,25 @@ var after = lab.after;
 var describe = lab.describe;
 var it = lab.it;
 
+var internals = {
+    defaults: {
+        apiPath: '/api',
+        reel: {
+            pailPath: '/tmp/reeltest',
+            workspace: 'workspace',
+            configFile: 'config.json'
+        }
+    }
+};
+
+
 internals.prepareServer = function (callback) {
     var server = new Hapi.Server();
 
     server.pack.register({
 
-        plugin: require('..')
+        plugin: require('..'),
+        options: internals.defaults
     }, function (err) {
 
         expect(err).to.not.exist;
