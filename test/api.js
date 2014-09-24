@@ -12,7 +12,7 @@ var internals = {
     defaults: {
         apiPath: '/api',
         reel: {
-            pailPath: '/tmp/testreel',
+            dirpath: '/tmp/testreel',
             workspace: 'workspace',
             configFile: 'config.json'
         }
