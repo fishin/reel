@@ -19,7 +19,6 @@ var internals = {
     }
 };
 
-
 internals.prepareServer = function (callback) {
     var server = new Hapi.Server();
 
@@ -58,6 +57,11 @@ describe('api', function () {
 
                         //console.log('result:\n' + JSON.stringify(response3.result, null, 4)); 
                         expect(response3.statusCode).to.equal(200);
+                        server.inject({ method: 'GET', url: '/api/run/'+ run_id + '/pid'}, function (pidResponse) {
+
+                            //console.log(pidResponse.result);
+                            expect(pidResponse.result).to.exist;
+                        });
                         var intervalObj = setInterval(function() {
 
                             //console.log('made it to setInterval');
@@ -71,6 +75,11 @@ describe('api', function () {
                                     expect(startResponse.result.id).to.exist;
                                     expect(startResponse.result.commands).to.be.length(8);
                                     expect(startResponse.result.commands[2].stdout).to.equal('reelin em in\n');
+                                    server.inject({ method: 'GET', url: '/api/run/'+ run_id + '/pid'}, function (pidResponse) {
+
+                                        //console.log(pidResponse.result);
+                                        expect(pidResponse.result).to.not.exist;
+                                    });
                                     server.inject({ method: 'GET', url: '/api/runs'}, function (response4) {
 
                                         //console.log('runs: ' + response4.result);
