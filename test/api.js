@@ -121,7 +121,7 @@ describe('api', function () {
 
                             server.inject({ method: 'GET', url: '/api/run/'+ run_id}, function (startResponse) {
 
-                                console.log(startResponse);       
+                                //console.log(startResponse);       
                                 if (startResponse.result.finishTime) {
                                     clearInterval(intervalObj);
                                     expect(startResponse.result.id).to.exist;
