@@ -100,7 +100,7 @@ describe('api', function () {
         internals.prepareServer(function (server) {
 
             var payload = {
-                commands: [ 'date', 'sleep 5', 'cat /etc/hosts', [ 'npm list', 'ls -altr' ] ]
+                commands: [ 'sleep 5', 'date' ]
             };
             server.inject({ method: 'POST', url: '/api/run', payload: payload }, function (response) {
 
@@ -112,37 +112,30 @@ describe('api', function () {
       
                     //console.log('result:\n' + JSON.stringify(response2.result, null, 4)); 
                     expect(response2.statusCode).to.equal(200);
-                    var intervalObj = setInterval(function() {
+                    server.inject({ method: 'GET', url: '/api/run/'+ run_id + '/cancel'}, function (response4) {
 
-                        server.inject({ method: 'GET', url: '/api/run/'+ run_id}, function (startResponse) {
+                        expect(response4.statusCode).to.equal(200);
+                        expect(response4.result.status).to.equal('cancelled');
+                        expect(response4.result).to.exist;
+                        var intervalObj = setInterval(function() {
 
-                            //console.log(startResponse);       
-                            if (startResponse.result.finishTime) {
-                                clearInterval(intervalObj);
-                                expect(startResponse.result.id).to.exist;
-                                expect(startResponse.result.commands).to.be.length(6);
-                                server.inject({ method: 'GET', url: '/api/run/'+ run_id}, function (response3) {
+                            server.inject({ method: 'GET', url: '/api/run/'+ run_id}, function (startResponse) {
 
-                                    expect(response3.statusCode).to.equal(200);
-                                    expect(response3.result.commands).to.exist;
-                                    expect(response3.result.id).to.exist;
-                                    expect(response3.result.createTime).to.exist;
-                                    server.inject({ method: 'GET', url: '/api/run/'+ run_id + '/cancel'}, function (response4) {
+                                console.log(startResponse);       
+                                if (startResponse.result.finishTime) {
+                                    clearInterval(intervalObj);
+                                    expect(startResponse.result.id).to.exist;
+                                    expect(startResponse.result.commands).to.be.length(2);
+                                    server.inject({ method: 'DELETE', url: '/api/run/'+ run_id }, function (response5) {
 
-                                        expect(response4.statusCode).to.equal(200);
-                                        expect(response4.result.status).to.equal('cancelled');
-                                        expect(response4.result).to.exist;
-                                        server.inject({ method: 'DELETE', url: '/api/run/'+ run_id }, function (response5) {
-
-                                            expect(response5.statusCode).to.equal(200);
-                                            expect(response5.payload).to.exist;
-                                            done();
-                                        });
+                                        expect(response5.statusCode).to.equal(200);
+                                        expect(response5.payload).to.exist;
+                                        done();
                                     });
-                                });
-                            }
-                        });
-                    }, 1000);
+                                }
+                            });
+                        }, 1000);
+                    });
                 });
            });
        });
