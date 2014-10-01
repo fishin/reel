@@ -368,11 +368,16 @@ describe('api', function () {
                                 expect(startResponse.result.id).to.exist;
                                 expect(startResponse.result.commands).to.be.length(1);
                                 expect(startResponse.result.status).to.equal('succeeded');
-                                server.inject({ method: 'DELETE', url: '/api/run/'+ run_id }, function (response5) {
+                                server.inject({ method: 'GET', url: '/api/run/bylink/lastFail'}, function (emptyResponse) {
 
-                                    expect(response5.statusCode).to.equal(200);
-                                    expect(response5.payload).to.exist;
-                                    done();
+                                    expect(emptyResponse.statusCode).to.equal(200);
+                                    expect(emptyResponse.result).to.not.exist;
+                                    server.inject({ method: 'DELETE', url: '/api/run/'+ run_id }, function (response5) {
+
+                                        expect(response5.statusCode).to.equal(200);
+                                        expect(response5.payload).to.exist;
+                                        done();
+                                    });
                                 });
                             }
                         });
