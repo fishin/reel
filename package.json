@@ -12,9 +12,6 @@
   },
   "author": "Lloyd Benson",
   "license": "MIT",
-  "engines": {
-    "node": ">=0.10.32"
-  },
   "dependencies": {
     "boom": "2.x.x",
     "concat-stream": "1.4.x",
