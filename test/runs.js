@@ -1,10 +1,9 @@
+var Code = require('code');
 var Lab = require('lab');
 var Hapi = require('hapi');
 
 var lab = exports.lab = Lab.script();
-var expect = Lab.expect;
-var before = lab.before;
-var after = lab.after;
+var expect = Code.expect;
 var describe = lab.describe;
 var it = lab.it;
 
@@ -28,7 +27,7 @@ internals.prepareServer = function (callback) {
         options: internals.defaults
     }, function (err) {
 
-        expect(err).to.not.exist;
+        expect(err).to.not.exist();
         callback(server);
     });
 };
@@ -47,8 +46,8 @@ describe('runs', function () {
             server.inject({ method: 'POST', url: '/api/run', payload: payload }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
-                expect(response.payload).to.exist;
-                expect(response.result.id).to.exist;
+                expect(response.payload).to.exist();
+                expect(response.result.id).to.exist();
                 var run_id = response.result.id;
                 server.inject({ method: 'GET', url: '/api/run/'+ run_id + '/start'}, function (response3) {
 
@@ -57,8 +56,8 @@ describe('runs', function () {
                     server.inject({ method: 'POST', url: '/api/run', payload: payload2}, function (response) {
 
                         expect(response.statusCode).to.equal(200);
-                        expect(response.payload).to.exist;
-                        expect(response.result.id).to.exist;
+                        expect(response.payload).to.exist();
+                        expect(response.result.id).to.exist();
                         var run_id2 = response.result.id;
                         server.inject({ method: 'GET', url: '/api/run/'+ run_id2+ '/start'}, function (response3) {
 
@@ -67,7 +66,7 @@ describe('runs', function () {
                             server.inject({ method: 'GET', url: '/api/run/'+ run_id2 + '/pids'}, function (pidResponse) {
 
                                 //console.log(pidResponse.result);
-                                expect(pidResponse.result).to.exist;
+                                expect(pidResponse.result).to.exist();
                             });
                             var intervalObj = setInterval(function() {
 
@@ -91,11 +90,11 @@ describe('runs', function () {
                                                     server.inject({ method: 'DELETE', url: '/api/run/'+ run_id2}, function (response5) {
 
                                                         expect(response5.statusCode).to.equal(200);
-                                                        expect(response5.payload).to.exist;
+                                                        expect(response5.payload).to.exist();
                                                         server.inject({ method: 'DELETE', url: '/api/run/'+ run_id}, function (response5) {
 
                                                             expect(response5.statusCode).to.equal(200);
-                                                            expect(response5.payload).to.exist;
+                                                            expect(response5.payload).to.exist();
                                                             done();
                                                         });
                                                     });

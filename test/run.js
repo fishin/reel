@@ -1,10 +1,9 @@
+var Code = require('code');
 var Lab = require('lab');
 var Hapi = require('hapi');
 
 var lab = exports.lab = Lab.script();
-var expect = Lab.expect;
-var before = lab.before;
-var after = lab.after;
+var expect = Code.expect;
 var describe = lab.describe;
 var it = lab.it;
 
@@ -28,7 +27,7 @@ internals.prepareServer = function (callback) {
         options: internals.defaults
     }, function (err) {
 
-        expect(err).to.not.exist;
+        expect(err).to.not.exist();
         callback(server);
     });
 };
@@ -44,15 +43,15 @@ describe('run', function () {
             server.inject({ method: 'POST', url: '/api/run', payload: payload }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
-                expect(response.payload).to.exist;
-                expect(response.result.id).to.exist;
+                expect(response.payload).to.exist();
+                expect(response.result.id).to.exist();
                 var run_id = response.result.id;
                 server.inject({ method: 'GET', url: '/api/run/'+ run_id}, function (response2) {
 
                     expect(response2.statusCode).to.equal(200);
-                    expect(response2.result.commands).to.exist;
-                    expect(response2.result.id).to.exist;
-                    expect(response2.result.createTime).to.exist;
+                    expect(response2.result.commands).to.exist();
+                    expect(response2.result.id).to.exist();
+                    expect(response2.result.createTime).to.exist();
                     server.inject({ method: 'GET', url: '/api/run/'+ run_id + '/start'}, function (response3) {
 
                         //console.log('result:\n' + JSON.stringify(response3.result, null, 4)); 
@@ -67,7 +66,7 @@ describe('run', function () {
                                     clearInterval(intervalObj); 
                                     //console.log(startResponse.result.commands);
                                     expect(startResponse.result.status).to.equal('succeeded');
-                                    expect(startResponse.result.id).to.exist;
+                                    expect(startResponse.result.id).to.exist();
                                     expect(startResponse.result.commands).to.be.length(8);
                                     expect(startResponse.result.commands[2].stdout).to.equal('reelin em in\n');
                                     server.inject({ method: 'GET', url: '/api/run/'+ run_id + '/pids'}, function (pidResponse) {
@@ -83,7 +82,7 @@ describe('run', function () {
                                         server.inject({ method: 'DELETE', url: '/api/run/'+ run_id }, function (response5) {
 
                                             expect(response5.statusCode).to.equal(200);
-                                            expect(response5.payload).to.exist;
+                                            expect(response5.payload).to.exist();
                                             done();
                                         });
                                     });
@@ -106,8 +105,8 @@ describe('run', function () {
             server.inject({ method: 'POST', url: '/api/run', payload: payload }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
-                expect(response.payload).to.exist;
-                expect(response.result.id).to.exist;
+                expect(response.payload).to.exist();
+                expect(response.result.id).to.exist();
                 var run_id = response.result.id;
                 server.inject({ method: 'GET', url: '/api/run/'+ run_id + '/start'}, function (response2) {
       
@@ -124,17 +123,17 @@ describe('run', function () {
 
                                 clearInterval(intervalObj);
                                 //console.log(startResponse.result);
-                                expect(startResponse.result.id).to.exist;
+                                expect(startResponse.result.id).to.exist();
                                 expect(startResponse.result.commands).to.be.length(1);
                                 expect(startResponse.result.status).to.equal('succeeded');
                                 server.inject({ method: 'GET', url: '/api/run/bylink/lastFail'}, function (emptyResponse) {
 
                                     expect(emptyResponse.statusCode).to.equal(200);
-                                    expect(emptyResponse.result).to.not.exist;
+                                    expect(emptyResponse.result).to.not.exist();
                                     server.inject({ method: 'DELETE', url: '/api/run/'+ run_id }, function (response5) {
 
                                         expect(response5.statusCode).to.equal(200);
-                                        expect(response5.payload).to.exist;
+                                        expect(response5.payload).to.exist();
                                         done();
                                     });
                                 });
