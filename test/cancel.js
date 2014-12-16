@@ -19,11 +19,11 @@ var internals = {
 };
 
 internals.prepareServer = function (callback) {
+
     var server = new Hapi.Server();
-
-    server.pack.register({
-
-        plugin: require('..'),
+    server.connection();
+    server.register({
+        register: require('..'),
         options: internals.defaults
     }, function (err) {
 
