@@ -45,14 +45,14 @@ describe('invalid', function () {
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist();
                 expect(response.result.id).to.exist();
-                var run_id = response.result.id;
-                server.inject({ method: 'GET', url: '/api/run/'+ run_id + '/start'}, function (response2) {
+                var runId = response.result.id;
+                server.inject({ method: 'GET', url: '/api/run/'+ runId + '/start'}, function (response2) {
       
                     //console.log('result:\n' + JSON.stringify(response2.result, null, 4)); 
                     expect(response2.statusCode).to.equal(200);
                     var intervalObj = setInterval(function() {
 
-                        server.inject({ method: 'GET', url: '/api/run/'+ run_id}, function (startResponse) {
+                        server.inject({ method: 'GET', url: '/api/run/'+ runId}, function (startResponse) {
 
                             //console.log(startResponse.result);       
                             if (startResponse.result.finishTime) {
@@ -62,7 +62,7 @@ describe('invalid', function () {
                                 expect(startResponse.result.commands[2].error).to.exist();
                                 expect(startResponse.result.commands[3].pid).to.not.exist();
                                 expect(startResponse.result.status).to.equal('failed');
-                                server.inject({ method: 'DELETE', url: '/api/run/'+ run_id }, function (response5) {
+                                server.inject({ method: 'DELETE', url: '/api/run/'+ runId }, function (response5) {
 
                                     expect(response5.statusCode).to.equal(200);
                                     expect(response5.payload).to.exist();
@@ -87,15 +87,15 @@ describe('invalid', function () {
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist();
                 expect(response.result.id).to.exist();
-                var run_id = response.result.id;
-                server.inject({ method: 'GET', url: '/api/run/'+ run_id + '/start'}, function (response2) {
+                var runId = response.result.id;
+                server.inject({ method: 'GET', url: '/api/run/'+ runId + '/start'}, function (response2) {
       
                     //console.log('result:\n' + JSON.stringify(response2.result, null, 4)); 
                     expect(response2.statusCode).to.equal(200);
                     var intervalObj = setInterval(function() {
 
                         //console.log('made it to setInterval');
-                        server.inject({ method: 'GET', url: '/api/run/'+ run_id}, function (startResponse) {
+                        server.inject({ method: 'GET', url: '/api/run/'+ runId}, function (startResponse) {
 
                             //console.log(startResponse);       
                             if (startResponse.result.finishTime) {
@@ -107,13 +107,13 @@ describe('invalid', function () {
                                 expect(startResponse.result.commands[5].error).to.exist();
                                 expect(startResponse.result.commands[6].pid).to.not.exist();
                                 expect(startResponse.result.status).to.equal('failed');
-                                server.inject({ method: 'GET', url: '/api/run/'+ run_id}, function (response3) {
+                                server.inject({ method: 'GET', url: '/api/run/'+ runId}, function (response3) {
 
                                     expect(response3.statusCode).to.equal(200);
                                     expect(response3.result.commands).to.exist();
                                     expect(response3.result.id).to.exist();
                                     expect(response3.result.createTime).to.exist();
-                                    server.inject({ method: 'DELETE', url: '/api/run/'+ run_id }, function (response5) {
+                                    server.inject({ method: 'DELETE', url: '/api/run/'+ runId }, function (response5) {
 
                                         expect(response5.statusCode).to.equal(200);
                                         expect(response5.payload).to.exist();

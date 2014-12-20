@@ -46,26 +46,26 @@ describe('cancel', function () {
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist();
                 expect(response.result.id).to.exist();
-                var run_id = response.result.id;
-                server.inject({ method: 'GET', url: '/api/run/'+ run_id + '/start'}, function (response2) {
+                var runId = response.result.id;
+                server.inject({ method: 'GET', url: '/api/run/'+ runId + '/start'}, function (response2) {
       
                     //console.log('result:\n' + JSON.stringify(response2.result, null, 4)); 
                     expect(response2.statusCode).to.equal(200);
-                    server.inject({ method: 'GET', url: '/api/run/'+ run_id + '/cancel'}, function (response4) {
+                    server.inject({ method: 'GET', url: '/api/run/'+ runId + '/cancel'}, function (response4) {
 
                         expect(response4.statusCode).to.equal(200);
                         expect(response4.result.status).to.equal('cancelled');
                         expect(response4.result).to.exist();
                         var intervalObj = setInterval(function() {
 
-                            server.inject({ method: 'GET', url: '/api/run/'+ run_id}, function (startResponse) {
+                            server.inject({ method: 'GET', url: '/api/run/'+ runId}, function (startResponse) {
 
                                 //console.log(startResponse);       
                                 if (startResponse.result.finishTime) {
                                     clearInterval(intervalObj);
                                     expect(startResponse.result.id).to.exist();
                                     expect(startResponse.result.commands).to.be.length(2);
-                                    server.inject({ method: 'DELETE', url: '/api/run/'+ run_id }, function (response5) {
+                                    server.inject({ method: 'DELETE', url: '/api/run/'+ runId }, function (response5) {
 
                                         expect(response5.statusCode).to.equal(200);
                                         expect(response5.payload).to.exist();
