@@ -1,18 +1,18 @@
 var Hapi = require('hapi');
-var Purdy = require('purdy');
 var Lout = require('lout');
 var Reel = require('./index');
 
-var server = new Hapi.Server(8080);
+var server = new Hapi.Server();
+server.connection({ port: 8080 });
 var options = {};
 
-server.pack.register({ plugin: Reel, options: options }, function(err) {
+server.register({ register: Reel, options: options }, function(err) {
    if (err) {
        console.log('reel did not load');
    }
 });
 
-server.pack.register({ plugin: Lout, options: options }, function(err) {
+server.register({ register: Lout, options: options }, function(err) {
    if (err) {
        console.log('lout did not load');
    }
@@ -46,7 +46,7 @@ server.on('request', function (request, event, tags) {
     };
 
     console.log('------ REQUEST RECEIVED -------');
-    Purdy(reqToRender);
+    console.log(reqToRender);
     console.log('-------------------------------');
 });
 
@@ -58,7 +58,7 @@ server.on('response', function (request) {
     };
 
     console.log('------- RESPONSE SENT ---------');
-    Purdy(reqToRender);
+    console.log(reqToRender);
     console.log('-------------------------------');
 });
 

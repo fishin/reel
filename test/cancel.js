@@ -11,9 +11,7 @@ var internals = {
     defaults: {
         apiPath: '/api',
         reel: {
-            dirpath: '/tmp/testreel',
-            workspace: 'workspace',
-            configFile: 'config.json'
+            dirpath: '/tmp/testreel'
         }
     }
 };
