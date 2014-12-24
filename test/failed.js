@@ -71,7 +71,11 @@ describe('fail', function () {
 
                                         expect(response5.statusCode).to.equal(200);
                                         expect(response5.payload).to.exist();
-                                        done();
+                                        server.inject({ method: 'DELETE', url: '/api/run/workspace' }, function (response6) {
+
+                                            expect(response6.statusCode).to.equal(200);
+                                            done();
+                                        });
                                     });
                                 });
                             }
@@ -123,7 +127,11 @@ describe('fail', function () {
 
                                         expect(response5.statusCode).to.equal(200);
                                         expect(response5.payload).to.exist();
-                                        done();
+                                        server.inject({ method: 'DELETE', url: '/api/run/workspace' }, function (response6) {
+
+                                            expect(response6.statusCode).to.equal(200);
+                                            done();
+                                        });
                                     });
                                 });
                             }

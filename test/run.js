@@ -62,7 +62,7 @@ describe('run', function () {
                                 //console.log(startResponse);       
                                 if (startResponse.result.finishTime) {
                                     clearInterval(intervalObj); 
-                                    //console.log(startResponse.result.commands);
+                                    //console.log(startResponse.result);
                                     expect(startResponse.result.status).to.equal('succeeded');
                                     expect(startResponse.result.id).to.exist();
                                     expect(startResponse.result.commands).to.be.length(8);
@@ -81,7 +81,11 @@ describe('run', function () {
 
                                             expect(response5.statusCode).to.equal(200);
                                             expect(response5.payload).to.exist();
-                                            done();
+                                            server.inject({ method: 'DELETE', url: '/api/run/workspace' }, function (response6) {
+
+                                                expect(response6.statusCode).to.equal(200);
+                                                done();
+                                            });
                                         });
                                     });
                                 } 
@@ -133,7 +137,11 @@ describe('run', function () {
 
                                         expect(response5.statusCode).to.equal(200);
                                         expect(response5.payload).to.exist();
-                                        done();
+                                        server.inject({ method: 'DELETE', url: '/api/run/workspace' }, function (response6) {
+
+                                            expect(response6.statusCode).to.equal(200);
+                                            done();
+                                        });
                                     });
                                 });
                             }
