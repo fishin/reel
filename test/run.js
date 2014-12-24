@@ -115,6 +115,7 @@ describe('run', function () {
                         //console.log('made it to setInterval');
                         server.inject({ method: 'GET', url: '/api/run/bylink/last'}, function (startResponse) {
 
+                            //console.log(startResponse);
                             expect(startResponse.statusCode).to.equal(200);
                             //console.log(startResponse);       
                             if (startResponse.result.finishTime) {
