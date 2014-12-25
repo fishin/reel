@@ -32,85 +32,159 @@ internals.prepareServer = function (callback) {
 
 describe('runs', function () {    
 
-    it('CRUD flow', function (done) {
+    it('POST /api/run git', function (done) {
+
         internals.prepareServer(function (server) {
 
             var payload = {
                 commands: [ 'git clone --branch=master https://github.com/fishin/reel .' ]
-            };
-            var payload2 = {
-                commands: [ 'date' ]
             };
             server.inject({ method: 'POST', url: '/api/run', payload: payload }, function (response) {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist();
                 expect(response.result.id).to.exist();
-                var runId = response.result.id;
-                server.inject({ method: 'GET', url: '/api/run/'+ runId + '/start'}, function (response3) {
+                done();
+            });
+        });
+    });
 
-                    //console.log('result:\n' + JSON.stringify(response3.result, null, 4)); 
-                    expect(response3.statusCode).to.equal(200);
-                    server.inject({ method: 'POST', url: '/api/run', payload: payload2}, function (response) {
+    it('GET /api/run/{runId}/start git', function (done) {
 
-                        expect(response.statusCode).to.equal(200);
-                        expect(response.payload).to.exist();
-                        expect(response.result.id).to.exist();
-                        var runId2 = response.result.id;
-                        server.inject({ method: 'GET', url: '/api/run/'+ runId2+ '/start'}, function (response3) {
+        internals.prepareServer(function (server) {
 
-                            //console.log('result:\n' + JSON.stringify(response3.result, null, 4)); 
-                            expect(response3.statusCode).to.equal(200);
-                            server.inject({ method: 'GET', url: '/api/run/'+ runId2 + '/pids'}, function (pidResponse) {
+            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
 
-                                //console.log(pidResponse.result);
-                                expect(pidResponse.result).to.exist();
-                            });
-                            var intervalObj = setInterval(function() {
+                var runId = response.result[0];
+                server.inject({ method: 'GET', url: '/api/run/'+ runId + '/start'}, function (response) {
 
-                                //console.log('made it to setInterval');
-                                server.inject({ method: 'GET', url: '/api/run/'+ runId}, function (startResponse) {
-
-                                    //console.log(startResponse);
-                                    var intervalObj2 = setInterval(function() {
-
-                                        //console.log('made it to setInterval');
-                                        server.inject({ method: 'GET', url: '/api/run/'+ runId2}, function (startResponse2) {
-
-                                            //console.log(startResponse2);       
-                                            if (startResponse2.result.finishTime) {
-                                                clearInterval(intervalObj2); 
-                                                server.inject({ method: 'GET', url: '/api/runs'}, function (response4) {
-
-                                                    //console.log('runs: ' + response4.result);
-                                                    expect(response4.statusCode).to.equal(200);
-                                                    expect(response4.result).to.have.length(2);
-                                                    server.inject({ method: 'DELETE', url: '/api/run/'+ runId2}, function (response5) {
-
-                                                        expect(response5.statusCode).to.equal(200);
-                                                        expect(response5.payload).to.exist();
-                                                        server.inject({ method: 'DELETE', url: '/api/run/'+ runId}, function (response5) {
-
-                                                            expect(response5.statusCode).to.equal(200);
-                                                            expect(response5.payload).to.exist();
-                                                            server.inject({ method: 'DELETE', url: '/api/run/workspace'}, function (response6) {
-
-                                                                expect(response6.statusCode).to.equal(200);
-                                                                done();
-                                                            });
-                                                        });
-                                                    });
-                                                });
-                                             } 
-                                         });
-                                    }, 1000); 
-                                });
-                            }, 1000); 
-                        });
-                    });
+                    //console.log('result:\n' + JSON.stringify(response.result, null, 4)); 
+                    expect(response.statusCode).to.equal(200);
+                    done();
                 });
             });
-       });
-   });
+        });
+    });
 
+    it('POST /api/run date', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            var payload = {
+                commands: [ 'date' ]
+            };
+            server.inject({ method: 'POST', url: '/api/run', payload: payload}, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist();
+                expect(response.result.id).to.exist();
+                done();
+            });
+        });
+    });
+
+    it('GET /api/run/{runId}/start date', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
+
+                var runId = response.result[1];
+                server.inject({ method: 'GET', url: '/api/run/'+ runId+ '/start'}, function (response) {
+
+                    //console.log('result:\n' + JSON.stringify(response.result, null, 4)); 
+                    expect(response.statusCode).to.equal(200);
+                    done();
+                });
+            });
+        });
+    });
+
+    it('GET /api/run/{runId}/pids', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
+
+                var runId1 = response.result[0];
+                var runId2 = response.result[1];
+                server.inject({ method: 'GET', url: '/api/run/'+ runId1 + '/pids'}, function (pidResponse) {
+
+                    //console.log(pidResponse.result);
+                    expect(pidResponse.result).to.exist();
+                });
+                var intervalObj = setInterval(function() {
+
+                    server.inject({ method: 'GET', url: '/api/run/'+ runId1}, function (startResponse) {
+
+                        //console.log(startResponse);
+                        var intervalObj2 = setInterval(function() {
+
+                            //console.log('made it to setInterval');
+                            server.inject({ method: 'GET', url: '/api/run/'+ runId2}, function (startResponse2) {
+
+                                //console.log(startResponse2);       
+                                if (startResponse2.result.finishTime) {
+                                    clearInterval(intervalObj2); 
+                                    server.inject({ method: 'GET', url: '/api/runs'}, function (response4) {
+
+                                        //console.log('runs: ' + response4.result);
+                                        expect(response4.statusCode).to.equal(200);
+                                        expect(response4.result).to.have.length(2);
+                                        done();
+                                    });
+                                } 
+                            });
+                        }, 1000); 
+                    });
+                }, 1000); 
+            });
+        });
+    });
+
+    it('DELETE /api/run/{runId} date', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
+
+                var runId = response.result[1];
+                server.inject({ method: 'DELETE', url: '/api/run/'+ runId}, function (response) {
+
+                    expect(response.statusCode).to.equal(200);
+                    expect(response.payload).to.exist();
+                    done();
+                });
+            });
+        });
+    });
+
+    it('DELETE /api/run/{runId} git', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
+
+                var runId = response.result[0];
+                server.inject({ method: 'DELETE', url: '/api/run/'+ runId}, function (response) {
+
+                    expect(response.statusCode).to.equal(200);
+                    expect(response.payload).to.exist();
+                    done();
+                });
+            });
+        });
+    });
+
+    it('DELETE /api/run/workspace', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            server.inject({ method: 'DELETE', url: '/api/run/workspace'}, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                done();
+            });
+        });
+    });
 });
