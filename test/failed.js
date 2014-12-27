@@ -32,7 +32,8 @@ internals.prepareServer = function (callback) {
 
 describe('fail', function () {    
 
-    it('serial flow', function (done) {
+    it('POST /api/run serial', function (done) {
+
         internals.prepareServer(function (server) {
 
             var payload = {
@@ -43,11 +44,22 @@ describe('fail', function () {
                 expect(response.statusCode).to.equal(200);
                 expect(response.payload).to.exist();
                 expect(response.result.id).to.exist();
-                var runId = response.result.id;
-                server.inject({ method: 'GET', url: '/api/run/'+ runId + '/start'}, function (response2) {
+                done();
+            });
+        });
+    });
+
+    it('POST /api/run/{runId}/start serial', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
+
+                var runId = response.result[0];
+                server.inject({ method: 'GET', url: '/api/run/'+ runId + '/start'}, function (response) {
       
-                    //console.log('result:\n' + JSON.stringify(response2.result, null, 4)); 
-                    expect(response2.statusCode).to.equal(200);
+                    //console.log('result:\n' + JSON.stringify(response.result, null, 4)); 
+                    expect(response.statusCode).to.equal(200);
                     var intervalObj = setInterval(function() {
 
                         //console.log('made it to setInterval');
@@ -61,30 +73,163 @@ describe('fail', function () {
                                 expect(startResponse.result.commands[1].code).to.exist();
                                 expect(startResponse.result.commands[2].pid).to.not.exist();
                                 expect(startResponse.result.status).to.equal('failed');
-                                server.inject({ method: 'GET', url: '/api/run/'+ runId}, function (response3) {
-
-                                    expect(response3.statusCode).to.equal(200);
-                                    expect(response3.result.commands).to.exist();
-                                    expect(response3.result.id).to.exist();
-                                    expect(response3.result.createTime).to.exist();
-                                    server.inject({ method: 'DELETE', url: '/api/run/'+ runId }, function (response5) {
-
-                                        expect(response5.statusCode).to.equal(200);
-                                        expect(response5.payload).to.exist();
-                                        server.inject({ method: 'DELETE', url: '/api/run/workspace' }, function (response6) {
-
-                                            expect(response6.statusCode).to.equal(200);
-                                            done();
-                                        });
-                                    });
-                                });
+                                done();
                             }
                         });
                     }, 1000);
                 });
-           });
-       });
-   });
+            });
+        });
+    });
+
+    it('GET /api/run/{runId} serial', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
+
+                var runId = response.result[0];
+                server.inject({ method: 'GET', url: '/api/run/'+ runId}, function (response) {
+
+                    expect(response.statusCode).to.equal(200);
+                    expect(response.result.commands).to.exist();
+                    expect(response.result.id).to.exist();
+                    expect(response.result.createTime).to.exist();
+                    done();
+                });
+            });
+        });
+    });
+
+    it('DELETE /api/run/{runId} serial', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
+
+                var runId = response.result[0];
+                server.inject({ method: 'DELETE', url: '/api/run/'+ runId }, function (response) {
+
+                    expect(response.statusCode).to.equal(200);
+                    expect(response.payload).to.exist();
+                    done();
+                });
+            });
+        });
+    });
+
+    it('DELETE /api/run/workspace serial', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            server.inject({ method: 'DELETE', url: '/api/run/workspace' }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                done();
+            });
+        });
+    });
+
+    it('POST /api/run parallel', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            var payload = {
+                commands: [ 'date', 'uptime', [ 'ls -altr', 'npm test', 'ls -altr' ], 'cat /etc/hosts' ]
+            };
+            server.inject({ method: 'POST', url: '/api/run', payload: payload }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.payload).to.exist();
+                expect(response.result.id).to.exist();
+                var runId = response.result.id;
+                done();
+            });
+        });
+    });
+
+    it('POST /api/run/{runId}/start parallel', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
+
+                var runId = response.result[0];
+                server.inject({ method: 'GET', url: '/api/run/'+ runId + '/start'}, function (response) {
+      
+                    //console.log('result:\n' + JSON.stringify(response2.result, null, 4)); 
+                    expect(response.statusCode).to.equal(200);
+                    var intervalObj = setInterval(function() {
+
+                        //console.log('made it to setInterval');
+                        server.inject({ method: 'GET', url: '/api/run/'+ runId}, function (startResponse) {
+
+                            //console.log(startResponse);       
+                            if (startResponse.result.finishTime) {
+
+                                clearInterval(intervalObj);
+                                //console.log(startResponse.result);
+                                expect(startResponse.result.id).to.exist();
+                                expect(startResponse.result.commands).to.be.length(7);
+                                expect(startResponse.result.commands[5].code).to.exist();
+                                //expect(startResponse.result.commands[6].pid).to.not.exist();
+                                expect(startResponse.result.status).to.equal('failed');
+                                done();
+                            }
+                        });
+                    }, 1000);
+                });
+            });
+        });
+    });
+
+    it('GET /api/run/{runId} parallel', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
+
+                var runId = response.result[0];
+                server.inject({ method: 'GET', url: '/api/run/'+ runId}, function (response) {
+
+                    expect(response.statusCode).to.equal(200);
+                    expect(response.result.commands).to.exist();
+                    expect(response.result.id).to.exist();
+                    expect(response.result.createTime).to.exist();
+                    done();
+                });
+            });
+        });
+    });
+
+    it('DELETE /api/run/{runId} parallel', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
+
+                var runId = response.result[0];
+                server.inject({ method: 'DELETE', url: '/api/run/'+ runId }, function (response) {
+
+                    expect(response.statusCode).to.equal(200);
+                    expect(response.payload).to.exist();
+                    done();
+                });
+            });
+        });
+    });
+
+    it('DELETE /api/run/workspace parallel', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            server.inject({ method: 'DELETE', url: '/api/run/workspace' }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                done();
+            });
+        });
+    });
 
     it('parallel flow', function (done) {
         internals.prepareServer(function (server) {
