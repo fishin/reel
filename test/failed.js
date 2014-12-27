@@ -30,9 +30,9 @@ internals.prepareServer = function (callback) {
     });
 };
 
-describe('fail', function () {    
+describe('fail serial', function () {
 
-    it('POST /api/run serial', function (done) {
+    it('POST /api/run', function (done) {
 
         internals.prepareServer(function (server) {
 
@@ -49,7 +49,7 @@ describe('fail', function () {
         });
     });
 
-    it('POST /api/run/{runId}/start serial', function (done) {
+    it('POST /api/run/{runId}/start', function (done) {
 
         internals.prepareServer(function (server) {
 
@@ -82,7 +82,7 @@ describe('fail', function () {
         });
     });
 
-    it('GET /api/run/{runId} serial', function (done) {
+    it('GET /api/run/{runId}', function (done) {
 
         internals.prepareServer(function (server) {
 
@@ -101,7 +101,7 @@ describe('fail', function () {
         });
     });
 
-    it('DELETE /api/run/{runId} serial', function (done) {
+    it('DELETE /api/run/{runId}', function (done) {
 
         internals.prepareServer(function (server) {
 
@@ -118,7 +118,7 @@ describe('fail', function () {
         });
     });
 
-    it('DELETE /api/run/workspace serial', function (done) {
+    it('DELETE /api/run/workspace', function (done) {
 
         internals.prepareServer(function (server) {
 
@@ -129,8 +129,10 @@ describe('fail', function () {
             });
         });
     });
+});
+describe('fail parallel', function () {
 
-    it('POST /api/run parallel', function (done) {
+    it('POST /api/run', function (done) {
 
         internals.prepareServer(function (server) {
 
@@ -148,7 +150,7 @@ describe('fail', function () {
         });
     });
 
-    it('POST /api/run/{runId}/start parallel', function (done) {
+    it('POST /api/run/{runId}/start', function (done) {
 
         internals.prepareServer(function (server) {
 
@@ -183,7 +185,7 @@ describe('fail', function () {
         });
     });
 
-    it('GET /api/run/{runId} parallel', function (done) {
+    it('GET /api/run/{runId}', function (done) {
 
         internals.prepareServer(function (server) {
 
@@ -202,7 +204,7 @@ describe('fail', function () {
         });
     });
 
-    it('DELETE /api/run/{runId} parallel', function (done) {
+    it('DELETE /api/run/{runId}', function (done) {
 
         internals.prepareServer(function (server) {
 
@@ -219,7 +221,7 @@ describe('fail', function () {
         });
     });
 
-    it('DELETE /api/run/workspace parallel', function (done) {
+    it('DELETE /api/run/workspace', function (done) {
 
         internals.prepareServer(function (server) {
 
