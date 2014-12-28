@@ -30,77 +30,7 @@ internals.prepareServer = function (callback) {
     });
 };
 
-describe('invalid serial', function () {    
-
-    it('POST /api/run', function (done) {
-
-        internals.prepareServer(function (server) {
-
-            var payload = {
-                commands: [ 'date', 'uptime', 'invalid', 'cat /etc/hosts' ]
-            };
-            server.inject({ method: 'POST', url: '/api/run', payload: payload }, function (response) {
-
-                expect(response.statusCode).to.equal(200);
-                expect(response.payload).to.exist();
-                expect(response.result.id).to.exist();
-                var runId = response.result.id;
-                done();
-            });
-        });
-    });
-
-    it('GET /api/run/{runId}/start', function (done) {
-
-        internals.prepareServer(function (server) {
-
-            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
-
-                var runId = response.result[0];
-                server.inject({ method: 'GET', url: '/api/run/'+ runId + '/start'}, function (response) {
-      
-                    //console.log('result:\n' + JSON.stringify(response.result, null, 4)); 
-                    expect(response.statusCode).to.equal(200);
-                    var intervalObj = setInterval(function() {
-
-                        server.inject({ method: 'GET', url: '/api/run/'+ runId}, function (startResponse) {
-
-                            //console.log(startResponse.result);       
-                            if (startResponse.result.finishTime) {
-                                clearInterval(intervalObj);
-                                expect(startResponse.result.id).to.exist();
-                                expect(startResponse.result.commands).to.be.length(4);
-                                expect(startResponse.result.commands[2].error).to.exist();
-                                expect(startResponse.result.commands[3].pid).to.not.exist();
-                                expect(startResponse.result.status).to.equal('failed');
-                                done();
-                            }
-                        });
-                    }, 1000);
-                });
-            });
-        });
-    });
-
-    it('DELETE /api/run/{runId}', function (done) {
-
-        internals.prepareServer(function (server) {
-
-            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
-
-                var runId = response.result[0];
-                server.inject({ method: 'DELETE', url: '/api/run/'+ runId }, function (response) {
-
-                    expect(response.statusCode).to.equal(200);
-                    expect(response.payload).to.exist();
-                    done();
-                });
-            });
-        });
-    });
-});
-
-describe('invalid parallel', function () {    
+describe('invalid', function () {    
 
     it('POST /api/run', function (done) {
         internals.prepareServer(function (server) {
