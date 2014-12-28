@@ -18,7 +18,6 @@
     "concat-stream": "1.4.x",
     "hapi": "8.x.x",
     "hoek": "2.x.x",
-    "items": "1.x.x",
     "joi": "5.x.x",
     "pail": "git+https://github.com/fishin/pail"
   },
