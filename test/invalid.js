@@ -71,9 +71,9 @@ describe('invalid', function () {
                                 clearInterval(intervalObj);
                                 //console.log(startResponse.result);
                                 expect(startResponse.result.id).to.exist();
-                                expect(startResponse.result.commands).to.be.length(7);
-                                expect(startResponse.result.commands[5].error).to.exist();
-                                expect(startResponse.result.commands[6].pid).to.not.exist();
+                                //console.log(startResponse.result);
+                                expect(startResponse.result.commands).to.be.length(4);
+                                expect(startResponse.result.commands[3].error).to.exist();
                                 expect(startResponse.result.status).to.equal('failed');
                                 done();
                             }
@@ -116,6 +116,18 @@ describe('invalid', function () {
                     expect(response.payload).to.exist();
                     done();
                 });
+            });
+        });
+    });
+
+    it('DELETE /api/run/workspace', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            server.inject({ method: 'DELETE', url: '/api/run/workspace' }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                done();
             });
         });
     });

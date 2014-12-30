@@ -72,9 +72,8 @@ describe('fail', function () {
                                 clearInterval(intervalObj);
                                 //console.log(startResponse.result);
                                 expect(startResponse.result.id).to.exist();
-                                expect(startResponse.result.commands).to.be.length(7);
-                                expect(startResponse.result.commands[5].code).to.exist();
-                                //expect(startResponse.result.commands[6].pid).to.not.exist();
+                                expect(startResponse.result.commands).to.be.length(4);
+                                expect(startResponse.result.commands[3].code).to.exist();
                                 expect(startResponse.result.status).to.equal('failed');
                                 done();
                             }

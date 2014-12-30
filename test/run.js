@@ -79,29 +79,58 @@ describe('run', function () {
 
                     //console.log('result:\n' + JSON.stringify(response.result, null, 4)); 
                     expect(response.statusCode).to.equal(200);
-                    var intervalObj = setInterval(function() {
-
-                        //console.log('made it to setInterval');
-                        server.inject({ method: 'GET', url: '/api/run/'+ runId}, function (startResponse) {
-
-                            //console.log(startResponse);       
-                            if (startResponse.result.finishTime) {
-                                clearInterval(intervalObj); 
-                                //console.log(startResponse.result);
-                                expect(startResponse.result.status).to.equal('succeeded');
-                                expect(startResponse.result.id).to.exist();
-                                expect(startResponse.result.commands).to.be.length(8);
-                                expect(startResponse.result.commands[2].stdout).to.equal('reelin em in\n');
-                                done();
-                            } 
-                        });
-                    }, 5000); 
+                    done();
                 });
             });
         });
     });
 
-    it('GET /api/run/{runId}/pids', function (done) {
+    it('GET /api/run/{runId}/pids 1', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
+
+                var runId = response.result[0];
+                server.inject({ method: 'GET', url: '/api/run/'+ runId + '/pids'}, function (pidResponse) {
+
+                    //console.log(pidResponse.result);
+                    expect(pidResponse.result).to.have.length(1);
+                    done();
+                });
+            });
+        });
+    });
+
+    it('GET /api/run/{runId}', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
+
+                var runId = response.result[0];
+                 var intervalObj = setInterval(function() {
+
+                    //console.log('made it to setInterval');
+                    server.inject({ method: 'GET', url: '/api/run/'+ runId}, function (startResponse) {
+
+                        //console.log(startResponse);       
+                        if (startResponse.result.finishTime) {
+                            clearInterval(intervalObj); 
+                            //console.log(startResponse.result);
+                            expect(startResponse.result.status).to.equal('succeeded');
+                            expect(startResponse.result.id).to.exist();
+                            expect(startResponse.result.commands).to.be.length(7);
+                            expect(startResponse.result.commands[2].stdout).to.equal('reelin em in\n');
+                            done();
+                        } 
+                    });
+                }, 1000); 
+            });
+        });
+    });
+
+    it('GET /api/run/{runId}/pids 0', function (done) {
 
         internals.prepareServer(function (server) {
 

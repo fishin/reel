@@ -109,8 +109,20 @@ describe('cancel', function () {
                     expect(response.payload).to.exist();
                     done();
                 });
-           });
-       });
-   });
+            });
+        });
+    });
+
+    it('DELETE /api/run/workspace', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            server.inject({ method: 'DELETE', url: '/api/run/workspace' }, function (response) {
+
+                expect(response.statusCode).to.equal(200);
+                done();
+            });
+        });
+    });
 
 });
