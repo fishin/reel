@@ -15,7 +15,6 @@
   "license": "MIT",
   "dependencies": {
     "boom": "2.x.x",
-    "concat-stream": "1.4.x",
     "hapi": "8.x.x",
     "hoek": "2.x.x",
     "joi": "5.x.x",
