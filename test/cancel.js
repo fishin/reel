@@ -76,8 +76,6 @@ describe('cancel', function () {
                 server.inject({ method: 'GET', url: '/api/run/'+ runId + '/cancel'}, function (response) {
 
                     expect(response.statusCode).to.equal(200);
-                    expect(response.result.status).to.equal('cancelled');
-                    expect(response.result).to.exist();
                     var intervalObj = setInterval(function() {
 
                         server.inject({ method: 'GET', url: '/api/run/'+ runId}, function (startResponse) {
@@ -85,8 +83,13 @@ describe('cancel', function () {
                             //console.log(startResponse);       
                             if (startResponse.result.finishTime) {
                                 clearInterval(intervalObj);
+                                //console.log(startResponse);
                                 expect(startResponse.result.id).to.exist();
+                                expect(startResponse.result.status).to.equal('cancelled');
                                 expect(startResponse.result.commands).to.be.length(2);
+                                expect(startResponse.result.commands[0].startTime).to.exist();
+                                expect(startResponse.result.commands[0].signal).to.equal('SIGTERM');
+                                expect(startResponse.result.commands[1].startTime).to.not.exist();
                                 done();
                             }
                         });
