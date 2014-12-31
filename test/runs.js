@@ -83,23 +83,6 @@ describe('runs', function () {
         });
     });
 
-    it('GET /api/run/{runId}/pids 1', function (done) {
-
-        internals.prepareServer(function (server) {
-
-            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
-
-                var runId = response.result[0];
-                server.inject({ method: 'GET', url: '/api/run/'+ runId + '/pids'}, function (pidResponse) {
-
-                    //console.log(pidResponse.result);
-                    expect(pidResponse.result).to.have.length(1);
-                    done();
-                });
-            });
-        });
-    });
-
     it('GET /api/run/{runId}/start date', function (done) {
 
         internals.prepareServer(function (server) {
@@ -159,49 +142,6 @@ describe('runs', function () {
                         } 
                     });
                 }, 1000); 
-            });
-        });
-    });
-
-    it('GET /api/run/{runId}/pids 0', function (done) {
-
-        internals.prepareServer(function (server) {
-
-            server.inject({ method: 'GET', url: '/api/runs'}, function (response) {
-
-                var runId = response.result[0];
-                server.inject({ method: 'GET', url: '/api/run/'+ runId + '/pids'}, function (pidResponse) {
-
-                    //console.log(pidResponse.result);
-                    expect(pidResponse.result).to.have.length(0);
-                    done();
-                });
-            });
-        });
-    });
-
-    it('GET /api/run/bylink/last', function (done) {
-
-        internals.prepareServer(function (server) {
-
-            server.inject({ method: 'GET', url: '/api/run/bylink/last'}, function (response) {
-
-                //console.log(response);
-                expect(response.statusCode).to.equal(200);
-                done();
-            });
-        });
-    });
-
-    it('GET /api/run/bylink/lastFail', function (done) {
-
-        internals.prepareServer(function (server) {
-
-            server.inject({ method: 'GET', url: '/api/run/bylink/lastFail'}, function (response) {
-
-                expect(response.statusCode).to.equal(200);
-                expect(response.result).to.not.exist();
-                done();
             });
         });
     });
