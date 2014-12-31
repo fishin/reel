@@ -37,7 +37,7 @@ describe('cancel', function () {
         internals.prepareServer(function (server) {
 
             var payload = {
-                commands: [ 'sleep 5', 'date' ]
+                commands: [ 'sleep 5', 'date', 'uptime' ]
             };
             server.inject({ method: 'POST', url: '/api/run', payload: payload }, function (response) {
 
@@ -86,7 +86,7 @@ describe('cancel', function () {
                                 //console.log(startResponse);
                                 expect(startResponse.result.id).to.exist();
                                 expect(startResponse.result.status).to.equal('cancelled');
-                                expect(startResponse.result.commands).to.be.length(2);
+                                expect(startResponse.result.commands).to.be.length(3);
                                 expect(startResponse.result.commands[0].startTime).to.exist();
                                 expect(startResponse.result.commands[0].signal).to.equal('SIGTERM');
                                 expect(startResponse.result.commands[1].startTime).to.not.exist();
