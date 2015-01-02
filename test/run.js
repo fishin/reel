@@ -17,6 +17,7 @@ var internals = {
 };
 
 internals.prepareServer = function (callback) {
+
     var server = new Hapi.Server();
     server.connection();
     server.register({
@@ -127,6 +128,16 @@ describe('run', function () {
                     });
                 }, 1000); 
             });
+        });
+    });
+
+    it('getWorkspaceArtifact', function (done) {
+
+        internals.prepareServer(function (server) {
+
+            var contents = server.plugins.reel.getWorkspaceArtifact('bin/test.sh');
+            expect(contents).to.contain('reelin em in');
+            done();
         });
     });
 

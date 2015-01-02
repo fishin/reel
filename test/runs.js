@@ -174,6 +174,8 @@ describe('runs', function () {
 
                     expect(response.statusCode).to.equal(200);
                     expect(response.payload).to.exist();
+                    console.log('sometimes its workspace and sometimes its the orig dir');
+                    console.log('need to figure out what condition causes it to not be the origDir each time');
                     console.log(process.cwd());
                     done();
                 });
