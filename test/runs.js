@@ -181,7 +181,6 @@ describe('runs', function () {
         });
     });
 
-/*
     it('DELETE /api/run/workspace', function (done) {
 
         internals.prepareServer(function (server) {
@@ -193,5 +192,4 @@ describe('runs', function () {
             });
         });
     });
-*/
 });
