@@ -174,12 +174,14 @@ describe('runs', function () {
 
                     expect(response.statusCode).to.equal(200);
                     expect(response.payload).to.exist();
+                    console.log(process.cwd());
                     done();
                 });
             });
         });
     });
 
+/*
     it('DELETE /api/run/workspace', function (done) {
 
         internals.prepareServer(function (server) {
@@ -191,4 +193,5 @@ describe('runs', function () {
             });
         });
     });
+*/
 });
