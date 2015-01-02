@@ -186,7 +186,9 @@ describe('runs', function () {
         internals.prepareServer(function (server) {
 
             server.inject({ method: 'DELETE', url: '/api/run/workspace'}, function (response) {
-
+                // fix this..for some reason sometimes process.cwd fails here
+                // maybe an issue in lib/runner?
+                process.chdir('/tmp');
                 expect(response.statusCode).to.equal(200);
                 done();
             });
