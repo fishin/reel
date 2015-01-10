@@ -8,7 +8,7 @@
     "url": "https://github.com/fishin/reel"
   },
   "scripts": {
-    "test": "lab -a code -t 99 -v -m 60000",
+    "test": "lab -a code -t 95 -v -m 60000",
     "json": "lab -a code -r json -t 100 -o lab.json -m 60000"
   },
   "author": "Lloyd Benson",
