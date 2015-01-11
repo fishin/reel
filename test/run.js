@@ -9,7 +9,6 @@ var it = lab.it;
 
 var internals = {
     defaults: {
-        apiPath: '/api',
         dirpath: '/tmp/testreel'
     }
 };
