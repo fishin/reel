@@ -9,7 +9,7 @@ var it = lab.it;
 
 var internals = {
     defaults: {
-        dirpath: '/tmp/testreel'
+        dirPath: '/tmp/testreel'
     }
 };
 
