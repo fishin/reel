@@ -10,9 +10,7 @@ var it = lab.it;
 var internals = {
     defaults: {
         apiPath: '/api',
-        reel: {
-            dirpath: '/tmp/testreel'
-        }
+        dirpath: '/tmp/testreel'
     }
 };
 
