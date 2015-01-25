@@ -155,11 +155,11 @@ describe('run', function () {
         });
     });
 
-    it('GET /api/run/bylink/last', function (done) {
+    it('GET /api/run/byname/last', function (done) {
 
         internals.prepareServer(function (server) {
 
-            server.inject({ method: 'GET', url: '/api/run/bylink/last'}, function (response) {
+            server.inject({ method: 'GET', url: '/api/run/byname/last'}, function (response) {
 
                 //console.log(response);
                 expect(response.statusCode).to.equal(200);
@@ -168,11 +168,11 @@ describe('run', function () {
         });
     });
 
-    it('GET /api/run/bylink/lastFail', function (done) {
+    it('GET /api/run/byname/lastFail', function (done) {
 
         internals.prepareServer(function (server) {
 
-            server.inject({ method: 'GET', url: '/api/run/bylink/lastFail'}, function (response) {
+            server.inject({ method: 'GET', url: '/api/run/byname/lastFail'}, function (response) {
 
                 expect(response.statusCode).to.equal(200);
                 expect(response.result).to.not.exist();
