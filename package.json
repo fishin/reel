@@ -7,12 +7,15 @@
     "type": "git",
     "url": "https://github.com/fishin/reel"
   },
+  "author": "Lloyd Benson",
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.12.x"
+  },
   "scripts": {
     "test": "lab -a code -t 95 -v -m 60000",
     "json": "lab -a code -r json -t 100 -o lab.json -m 60000"
   },
-  "author": "Lloyd Benson",
-  "license": "MIT",
   "dependencies": {
     "boom": "2.x.x",
     "hapi": "8.x.x",
