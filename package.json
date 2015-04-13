@@ -1,7 +1,7 @@
 {
   "name": "reel",
-  "version": "1.0.2",
-  "description": "restful api for executing commands",
+  "version": "1.0.3",
+  "description": "api instance functions for ficion",
   "main": "index.js",
   "repository": {
     "type": "git",
