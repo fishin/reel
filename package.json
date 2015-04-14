@@ -1,6 +1,6 @@
 {
   "name": "reel",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "api instance functions for ficion",
   "main": "index.js",
   "repository": {
