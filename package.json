@@ -2,7 +2,7 @@
   "name": "reel",
   "version": "1.0.4",
   "description": "api instance functions for ficion",
-  "main": "index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/fishin/reel"
