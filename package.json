@@ -13,8 +13,8 @@
     "node": ">=0.12.x"
   },
   "scripts": {
-    "test": "lab -a code -t 100 -v -m 2000",
-    "json": "lab -a code -r json -t 100 -o lab.json -m 2000"
+    "test": "lab -a code -t 100 -v -m 2000 -r json -o lab.json -r html -o lab.html -r console -o stdout -r console -o console.log",
+    "console": "lab -a code -t 100 -v -m 2000"
   },
   "dependencies": {
     "hoek": "2.x.x",
