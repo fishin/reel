@@ -10,7 +10,7 @@
   "author": "Lloyd Benson",
   "license": "MIT",
   "engines": {
-    "node": ">=0.10.x"
+    "node": ">=4"
   },
   "scripts": {
     "clean": "rm -rf node_modules",
@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "hoek": "2.x.x",
-    "joi": "5.x.x",
+    "joi": "6.x.x",
     "pail": "git+https://github.com/fishin/pail"
   },
   "devDependencies": {
