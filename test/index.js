@@ -1,106 +1,108 @@
-var Code = require('code');
-var Lab = require('lab');
+'use strict';
 
-var Bait = require('../lib/index');
+const Code = require('code');
+const Lab = require('lab');
 
-var internals = {
+const Bait = require('../lib/index');
+
+const internals = {
     defaults: {
         dirPath: __dirname + '/tmp'
     }
 };
 
-var lab = exports.lab = Lab.script();
-var expect = Code.expect;
-var describe = lab.describe;
-var it = lab.it;
+const lab = exports.lab = Lab.script();
+const expect = Code.expect;
+const describe = lab.describe;
+const it = lab.it;
 
-describe('reel', function () {
+describe('reel', () => {
 
-    it('createReel reel1', function (done) {
+    it('createReel reel1', (done) => {
 
-        var config = {
+        const config = {
             name: 'reel1',
             host: 'localhost',
             port: 8081,
             size: 4
         };
-        var bait = new Bait(internals.defaults);
-        var reel = bait.createReel(config);
+        const bait = new Bait(internals.defaults);
+        const reel = bait.createReel(config);
         expect(reel.id).to.exist();
         done();
     });
 
-    it('createReel reel2', function (done) {
+    it('createReel reel2', (done) => {
 
-        var config = {
+        const config = {
             name: 'reel2',
             host: 'localhost',
             port: 8082,
             size: 4
         };
-        var bait = new Bait(internals.defaults);
-        var reel = bait.createReel(config);
+        const bait = new Bait(internals.defaults);
+        const reel = bait.createReel(config);
         expect(reel.id).to.exist();
         done();
     });
 
-    it('getReelByName reel1', function (done) {
+    it('getReelByName reel1', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var reel = bait.getReelByName('reel1');
+        const bait = new Bait(internals.defaults);
+        const reel = bait.getReelByName('reel1');
         expect(reel.id).to.exist();
         expect(reel.name).to.equal('reel1');
         done();
     });
 
-    it('getReel', function (done) {
+    it('getReel', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var reel = bait.getReelByName('reel1');
-        var getReel = bait.getReel(reel.id);
+        const bait = new Bait(internals.defaults);
+        const reel = bait.getReelByName('reel1');
+        const getReel = bait.getReel(reel.id);
         expect(getReel.id).to.exist();
         expect(getReel.size).to.equal(4);
         done();
     });
 
-    it('getReels', function (done) {
+    it('getReels', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var reels = bait.getReels();
+        const bait = new Bait(internals.defaults);
+        const reels = bait.getReels();
         expect(reels.length).to.equal(2);
         done();
     });
 
-    it('updateReel reel2', function (done) {
+    it('updateReel reel2', (done) => {
 
-        var config = {
+        const config = {
             size: 5
         };
-        var bait = new Bait(internals.defaults);
-        var reel = bait.getReelByName('reel2');
-        var updateReel = bait.updateReel(reel.id, config);
+        const bait = new Bait(internals.defaults);
+        const reel = bait.getReelByName('reel2');
+        const updateReel = bait.updateReel(reel.id, config);
         expect(updateReel.size).to.equal(5);
         done();
     });
 
-    it('deleteReel reel2', function (done) {
+    it('deleteReel reel2', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var reel = bait.getReelByName('reel2');
+        const bait = new Bait(internals.defaults);
+        const reel = bait.getReelByName('reel2');
         expect(reel.id).to.exist();
         bait.deleteReel(reel.id);
-        var reels = bait.getReels();
+        const reels = bait.getReels();
         expect(reels.length).to.equal(1);
         done();
     });
 
-    it('deleteReel reel1', function (done) {
+    it('deleteReel reel1', (done) => {
 
-        var bait = new Bait(internals.defaults);
-        var reel = bait.getReelByName('reel1');
+        const bait = new Bait(internals.defaults);
+        const reel = bait.getReelByName('reel1');
         expect(reel.id).to.exist();
         bait.deleteReel(reel.id);
-        var reels = bait.getReels();
+        const reels = bait.getReels();
         expect(reels.length).to.equal(0);
         done();
     });

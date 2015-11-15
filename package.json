@@ -1,6 +1,6 @@
 {
   "name": "reel",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "api instance functions for ficion",
   "main": "lib/index.js",
   "repository": {
@@ -24,6 +24,6 @@
   },
   "devDependencies": {
     "code": "1.x.x",
-    "lab": "6.x.x"
+    "lab": "7.x.x"
   }
 }
